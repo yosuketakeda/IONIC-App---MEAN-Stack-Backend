@@ -1,0 +1,115 @@
+﻿var config = require('config.json');
+var express = require('express');
+var router = express.Router();
+var userService = require('services/user.service');
+
+// routes
+router.post('/authenticate', authenticate);
+router.post('/register', register);
+router.get('/', getAll);
+router.get('/current', getCurrent);
+router.get('/customers', getByCustomer);
+router.get('/:_id', getByCafe);
+router.put('/:_id', update);
+router.delete('/:_id', _delete);
+
+module.exports = router;
+
+console.log('Here is control');
+
+function authenticate(req, res) {
+    userService.authenticate(req.body.username, req.body.password)
+        .then(function(user) {
+            if (user) {
+                // authentication successful
+                res.send(user);
+            } else {
+                // authentication failed
+                res.status(400).send('Username or password is incorrect');
+            }
+        })
+        .catch(function(err) {
+            res.status(400).send(err);
+        });
+}
+
+function register(req, res) {
+    userService.create(req.body)
+        .then(function() {
+            res.json('success');
+        })
+        .catch(function(err) {
+            res.status(400).send(err);
+        });
+}
+
+function getAll(req, res) {
+    userService.getAll()
+        .then(function(users) {
+            res.send(users);
+        })
+        .catch(function(err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByCustomer(req, res) {
+    console.log('Here is customer of controller');
+    userService.getByCustomer()
+        .then(function(customers) {
+
+            res.send(customers);
+        })
+        .catch(function(err) {
+            res.status(400).send(err);
+        });
+}
+
+function getByCafe(req, res) {
+    // console.log(req.user.sub);
+    userService.getByCafe(req.user.sub)
+        .then(function(user) {
+            if (user) {
+                res.send(user);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function(err) {
+            res.status(400).send(err);
+        });
+}
+
+function getCurrent(req, res) {
+    userService.getById(req.user.sub)
+        .then(function(user) {
+            if (user) {
+                res.send(user);
+            } else {
+                res.sendStatus(404);
+            }
+        })
+        .catch(function(err) {
+            res.status(400).send(err);
+        });
+}
+
+function update(req, res) {
+    userService.update(req.params._id, req.body)
+        .then(function() {
+            res.json('success');
+        })
+        .catch(function(err) {
+            res.status(400).send(err);
+        });
+}
+
+function _delete(req, res) {
+    userService.delete(req.params._id)
+        .then(function() {
+            res.json('success');
+        })
+        .catch(function(err) {
+            res.status(400).send(err);
+        });
+}

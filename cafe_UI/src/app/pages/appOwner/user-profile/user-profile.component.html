@@ -1,0 +1,37 @@
+<div class="main-content">
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="card">
+                    <div class="card-header" data-background-color="red">
+                        <h4 class="title">All Cafe Owners Overview</h4>
+                        <p class="category">You can select each owner on row.</p>
+                    </div>
+                    <div class="card-content table-responsive">
+                        <table class="table">
+                            <thead class="text-danger">
+                                <tr>
+                                    <th>Cafe Name</th>
+                                    <th>Total Sales</th>
+                                    <th>Total Sales of This Year</th>
+                                    <th>Total Orders</th>
+                                    <th>No of Customer</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr *ngFor="let cafe of cafes">
+                                    <td>{{cafe.cafeName}}</td>
+                                    <td>{{cafe.totalSales}}</td>
+                                    <td>{{cafe.totalOfYear}}</td>
+                                    <td>{{cafe.totalOrders}}</td>
+                                    <td>{{cafe.totalCustomers}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
